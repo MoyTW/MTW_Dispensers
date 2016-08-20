@@ -2,11 +2,11 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("ExtendedStorage")]
+[assembly: AssemblyTitle("ExtendedStorageExtended")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ExtendedStorage")]
+[assembly: AssemblyProduct("ExtendedStorageExtended")]
 [assembly: AssemblyCopyright("Copyright ©  2015 (skullywag)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -9,7 +9,7 @@ using Verse.AI;
 using Verse;
 using System.Reflection;
 
-namespace ExtendedStorage
+namespace ExtendedStorageExtended
 {
     internal class _Thing : Thing
     {

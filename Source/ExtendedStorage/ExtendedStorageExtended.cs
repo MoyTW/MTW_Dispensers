@@ -1,6 +1,6 @@
 ﻿using Verse;
 
-namespace ExtendedStorage
+namespace ExtendedStorageExtended
 {
     public class ESdef : ThingDef
     {

@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Verse;
 
-namespace ExtendedStorage
+namespace ExtendedStorageExtended
 {
     public class DetourInjector : SpecialInjector
     {

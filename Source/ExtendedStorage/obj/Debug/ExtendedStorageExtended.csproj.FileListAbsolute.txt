@@ -1,0 +1,7 @@
+C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\bin\Debug\ExtendedStorageExtended.dll
+C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\bin\Debug\ExtendedStorageExtended.pdb
+C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\bin\Debug\Assembly-CSharp.dll
+C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\bin\Debug\Community Core Library.dll
+C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\bin\Debug\UnityEngine.dll
+C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\obj\Debug\ExtendedStorageExtended.dll
+C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\obj\Debug\ExtendedStorageExtended.pdb

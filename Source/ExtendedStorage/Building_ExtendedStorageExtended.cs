@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
-namespace ExtendedStorage
+namespace ExtendedStorageExtended
 {
-    public class Building_ExtendedStorage : Building_Storage
+    public class Building_ExtendedStorageExtended : Building_Storage
     {
         private IntVec3 inputSlot;
         private IntVec3 outputSlot;
