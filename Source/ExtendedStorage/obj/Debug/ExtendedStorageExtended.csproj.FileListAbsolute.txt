@@ -5,3 +5,4 @@ C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\Extende
 C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\bin\Debug\UnityEngine.dll
 C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\obj\Debug\ExtendedStorageExtended.dll
 C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\obj\Debug\ExtendedStorageExtended.pdb
+C:\Users\Travis Moy\Projects\RimworldMods\ExtendedStorageExtended\Source\ExtendedStorage\obj\Debug\ExtendedStorageExtended.csprojResolveAssemblyReference.cache
