@@ -12,6 +12,14 @@ namespace ExtendedStorage
         private IntVec3 outputSlot;
         private int maxStorage = 1000;
         private ThingDef storedThingDef;
+        private Mode mode = Mode.stockpile;
+
+        private enum Mode
+        {
+            stockpile = 0,
+            dispense
+        }
+
         public Thing StoredThingAtInput
         {
             get
@@ -97,9 +105,22 @@ namespace ExtendedStorage
             if (Find.TickManager.TicksGame % 10 == 0)
             {
                 this.CheckOutputSlot();
-                if (!this.StorageFull)
+                if (this.mode == Mode.stockpile)
                 {
                     this.TryMoveItem();
+                }
+                else
+                {
+                    Thing storedThingAtInput = this.StoredThingAtInput;
+                    if (storedThingAtInput == null)
+                    {
+                        this.mode = Mode.stockpile;
+                    }
+                    else if (storedThingAtInput != null && storedThingAtInput.stackCount <= storedThingAtInput.def.stackLimit)
+                    {
+                        this.mode = Mode.stockpile;
+                        this.StoredThing.SetForbidden(false);
+                    }
                 }
             }
         }
@@ -155,10 +176,20 @@ namespace ExtendedStorage
                     int num = Mathf.Min(a, storedThingAtInput2.stackCount);
                     storedThing.stackCount += num;
                     storedThingAtInput2.stackCount -= num;
-                    if (storedThingAtInput2.stackCount <= 0)
+                    if (this.StorageFull)
+                    {
+                        int n = storedThing.stackCount - storedThing.def.stackLimit;
+                        storedThingAtInput2.stackCount += n;
+                        storedThing.stackCount -= n;
+                        storedThing.SetForbidden(true);
+
+                        this.mode = Mode.dispense;
+                    }
+                    else if (storedThingAtInput2.stackCount <= 0)
                     {
                         storedThingAtInput2.Destroy(0);
                     }
+
                     return;
                 }
                 Thing thing2 = ThingMaker.MakeThing(storedThingAtInput2.def, storedThingAtInput2.Stuff);
