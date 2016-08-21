@@ -47,6 +47,7 @@
     </killedLeavings>
     <filthLeaving>BuildingRubble</filthLeaving>
     <building>
+	  <wantsHopperAdjacent>true</wantsHopperAdjacent>
     </building>
     <inspectorTabs>
       <li>ITab_Storage</li>
