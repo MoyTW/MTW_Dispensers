@@ -11,7 +11,7 @@ namespace ExtendedStorageExtended
     public class Building_ExtendedStorageExtended : Building_Storage
     {
         private IntVec3 outputSlot;
-        private int maxStorage = 1000;
+        private int maxStorage = 3;
         private ThingDef storedThingDef;
         private Mode mode = Mode.stockpile;
         private CompHopperUser compHopperUser;
@@ -92,23 +92,12 @@ namespace ExtendedStorageExtended
         {
             get
             {
-                return this.storedThingDef != null && this.StoredThing != null && this.StoredThing.stackCount <= (this.ApparentMaxStorage - this.storedThingDef.stackLimit);
-            }
-        }
-
-        public int ApparentMaxStorage
-        {
-            get
-            {
-                if (this.storedThingDef == null)
+                if (this.storedThingDef != null && this.StoredThing != null)
                 {
-                    return 0;
+                    int capacity = (this.maxStorage - 1) * this.storedThingDef.stackLimit;
+                    return this.StoredThing.stackCount <= capacity;
                 }
-                if (this.storedThingDef.smallVolume)
-                {
-                    return (int)((float)this.maxStorage / 0.2f);
-                }
-                return this.maxStorage;
+                return false;
             }
         }
 
@@ -249,10 +238,9 @@ namespace ExtendedStorageExtended
             {
                 if (storedThing != null)
                 {
-                    int a = this.ApparentMaxStorage - storedThing.stackCount;
-                    int num = Mathf.Min(a, hopperThing.stackCount);
-                    storedThing.stackCount += num;
-                    hopperThing.stackCount -= num;
+                    int numTransfer = hopperThing.stackCount;
+                    storedThing.stackCount += numTransfer;
+                    hopperThing.stackCount -= numTransfer;
                     if (hopperThing.stackCount <= 0)
                     {
                         hopperThing.Destroy(0);
