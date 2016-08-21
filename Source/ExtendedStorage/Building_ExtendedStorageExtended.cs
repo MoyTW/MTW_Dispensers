@@ -241,18 +241,17 @@ namespace ExtendedStorageExtended
                     int numTransfer = hopperThing.stackCount;
                     storedThing.stackCount += numTransfer;
                     hopperThing.stackCount -= numTransfer;
-                    if (hopperThing.stackCount <= 0)
-                    {
-                        hopperThing.Destroy(0);
-                    }
-                    if (!this.StorageHasSpaceForStack)
-                    {
-                        this.mode = Mode.dispense;
-                    }
-                    return;
                 }
-                Thing thing2 = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
-                GenSpawn.Spawn(thing2, this.outputSlot);
+                else
+                {
+                    Thing thing2 = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
+                    GenSpawn.Spawn(thing2, this.outputSlot);
+                }
+
+                if (!this.StorageHasSpaceForStack)
+                {
+                    this.mode = Mode.dispense;
+                }
                 hopperThing.Destroy(0);
                 this.ProgramAttachedHoppers();
             }
