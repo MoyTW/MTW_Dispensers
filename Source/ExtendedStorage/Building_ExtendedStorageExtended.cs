@@ -194,7 +194,15 @@ namespace ExtendedStorageExtended
         {
             if (this.storedThingDef == null)
             {
-                return;
+                Thing alreadyInOutput = (
+                from t in Find.ThingGrid.ThingsAt(this.outputSlot)
+                orderby t.stackCount
+                select t).FirstOrDefault();
+
+                if (alreadyInOutput != null)
+                {
+                    this.storedThingDef = alreadyInOutput.def;
+                }
             }
             if (this.StoredThing == null)
             {
@@ -217,22 +225,22 @@ namespace ExtendedStorageExtended
                 GenSpawn.Spawn(thing, this.outputSlot);
             }
         }
+
         private void TryMoveItem()
         {
-            if (this.storedThingDef == null)
-            {
-                Thing storedThingAtInput = this.StoredThingInHopper;
-                if (storedThingAtInput != null)
-                {
-                    this.storedThingDef = storedThingAtInput.def;
-                    Thing thing = ThingMaker.MakeThing(this.storedThingDef, storedThingAtInput.Stuff);
-                    thing.stackCount = storedThingAtInput.stackCount;
-                    storedThingAtInput.Destroy(0);
-                    GenSpawn.Spawn(thing, this.outputSlot);
-                }
+            Thing hopperThing = this.StoredThingInHopper;
+
+            // If this is null, it means there is nothing in the output slot, since CheckOutput is called directly
+            // before this. Yes, that's...a confusing flow, I'll refactor it if I have the energy.
+            if (this.storedThingDef == null) {
+                this.storedThingDef = hopperThing.def;
+                Thing thing = ThingMaker.MakeThing(this.storedThingDef, hopperThing.Stuff);
+                thing.stackCount = hopperThing.stackCount;
+                hopperThing.Destroy(0);
+                GenSpawn.Spawn(thing, this.outputSlot);
                 return;
             }
-            Thing hopperThing = this.StoredThingInHopper;
+
             Thing storedThing = this.StoredThing;
             if (hopperThing != null)
             {
