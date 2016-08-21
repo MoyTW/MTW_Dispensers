@@ -22,28 +22,6 @@ namespace ExtendedStorageExtended
             dispense
         }
 
-        public void FindAndSynchronizeHoppers(StorageSettings settings)
-        {
-            var hoppers = this.CompHopperUser.FindHoppers();
-            if (hoppers.NullOrEmpty())
-            {
-                return;
-            }
-            foreach (var hopper in hoppers)
-            {
-                hopper.DeprogramHopper();
-                hopper.ProgramHopper(settings);
-            }
-        }
-
-        public ThingFilter ResourceFilter
-        {
-            get
-            {
-                return this.GetStoreSettings().filter;
-            }
-        }
-
         public CompHopperUser CompHopperUser
         {
             get
@@ -143,7 +121,7 @@ namespace ExtendedStorageExtended
                 // TODO: Change to synchronize on change in parent settings only!
                 if (Find.TickManager.TicksGame % 120 == 0)
                 {
-                    this.FindAndSynchronizeHoppers(this.GetStoreSettings());
+                    this.ProgramAttachedHoppers(this.GetStoreSettings());
                 }
 
                 this.CheckOutputSlot();
@@ -166,6 +144,50 @@ namespace ExtendedStorageExtended
                 }
             }
         }
+
+        #region Hopper Programming
+
+        private void DisallowAttachedHoppers()
+        {
+            List<CompHopper> hoppers = this.CompHopperUser.FindHoppers();
+
+            foreach (var hopper in hoppers)
+            {
+                StorageSettings empty = new StorageSettings();
+                hopper.DeprogramHopper();
+                hopper.ProgramHopper(empty);
+            }
+
+        }
+
+        private void AllowAttachedHoppers()
+        {
+            var hoppers = this.CompHopperUser.FindHoppers();
+            if (hoppers.NullOrEmpty())
+            {
+                return;
+            }
+            foreach (var hopper in hoppers)
+            {
+                hopper.DeprogramHopper();
+                hopper.ProgramHopper(settings);
+            }
+        }
+
+        private void ProgramAttachedHoppers(StorageSettings settings)
+        {
+            if (this.mode == Mode.stockpile)
+            {
+                this.AllowAttachedHoppers();
+            }
+            else
+            {
+                this.DisallowAttachedHoppers();
+            }
+        }
+
+        #endregion
+
         private void CheckOutputSlot()
         {
             if (this.storedThingDef == null)
