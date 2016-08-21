@@ -10,9 +10,7 @@ namespace ExtendedStorageExtended
 
     public class Building_ExtendedStorageExtended : Building_Storage
     {
-        private IntVec3 inputSlot;
         private IntVec3 outputSlot;
-        private IntVec3 beforeInput;
         private int maxStorage = 1000;
         private ThingDef storedThingDef;
         private Mode mode = Mode.stockpile;
@@ -58,33 +56,35 @@ namespace ExtendedStorageExtended
             }
         }
 
-        public Thing StoredThingAtInput
+        public Thing StoredThingInHopper
         {
             get
             {
+                List<CompHopper> hoppers = this.CompHopperUser.FindHoppers();
+
                 if (this.storedThingDef != null)
                 {
-                    List<Thing> list = (
-                        from t in Find.ThingGrid.ThingsAt(this.inputSlot)
-                        where t.def == this.storedThingDef
-                        select t).ToList<Thing>();
-                    if (list.Count <= 0)
+                    foreach (var hopper in hoppers)
                     {
-                        return null;
+                        var thing = hopper.GetResource(this.storedThingDef);
+                        if (thing != null)
+                        {
+                            return thing;
+                        }
                     }
-                    return list.First<Thing>();
+                    return null;
                 }
                 else
                 {
-                    List<Thing> list2 = (
-                        from t in Find.ThingGrid.ThingsAt(this.inputSlot)
-                        where this.slotGroup.Settings.AllowedToAccept(t)
-                        select t).ToList<Thing>();
-                    if (list2.Count <= 0)
+                    foreach (var hopper in hoppers)
                     {
-                        return null;
+                        var validThing = hopper.GetResource(this.settings.filter);
+                        if (validThing != null)
+                        {
+                            return validThing;
+                        }
                     }
-                    return list2.First<Thing>();
+                    return null;
                 }
             }
         }
@@ -133,20 +133,13 @@ namespace ExtendedStorageExtended
         {
             base.SpawnSetup();
             this.maxStorage = ((ESdef)this.def).maxStorage;
-            List<IntVec3> list = GenAdj.CellsOccupiedBy(this).ToList<IntVec3>();
-            this.inputSlot = list[0];
-            this.outputSlot = list[1];
-
-            IntVec2 s = new IntVec2(1, 1);
-            this.beforeInput = GenAdj.CellsAdjacentCardinal(this.inputSlot, this.Rotation, s).First();
+            this.outputSlot = GenAdj.CellsOccupiedBy(this).ToList<IntVec3>().First();
         }
         public override void Tick()
         {
             base.Tick();
             if (Find.TickManager.TicksGame % 10 == 0)
             {
-                Log.Message("Rotation: " + this.Rotation + " inputSlot: " + this.inputSlot + " outputSlot:" + this.outputSlot + " adjInput: " + this.beforeInput);
-
                 // TODO: Change to synchronize on change in parent settings only!
                 if (Find.TickManager.TicksGame % 120 == 0)
                 {
@@ -160,7 +153,7 @@ namespace ExtendedStorageExtended
                 }
                 else
                 {
-                    Thing storedThingAtInput = this.StoredThingAtInput;
+                    Thing storedThingAtInput = this.StoredThingInHopper;
                     if (storedThingAtInput == null)
                     {
                         this.mode = Mode.stockpile;
@@ -204,7 +197,7 @@ namespace ExtendedStorageExtended
         {
             if (this.storedThingDef == null)
             {
-                Thing storedThingAtInput = this.StoredThingAtInput;
+                Thing storedThingAtInput = this.StoredThingInHopper;
                 if (storedThingAtInput != null)
                 {
                     this.storedThingDef = storedThingAtInput.def;
@@ -215,7 +208,7 @@ namespace ExtendedStorageExtended
                 }
                 return;
             }
-            Thing storedThingAtInput2 = this.StoredThingAtInput;
+            Thing storedThingAtInput2 = this.StoredThingInHopper;
             Thing storedThing = this.StoredThing;
             if (storedThingAtInput2 != null)
             {
