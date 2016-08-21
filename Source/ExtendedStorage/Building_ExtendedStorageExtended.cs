@@ -88,11 +88,11 @@ namespace ExtendedStorageExtended
             }
         }
 
-        public bool StorageFull
+        public bool StorageHasSpaceForStack
         {
             get
             {
-                return this.storedThingDef != null && this.StoredThing != null && this.StoredThing.stackCount >= this.ApparentMaxStorage;
+                return this.storedThingDef != null && this.StoredThing != null && this.StoredThing.stackCount <= (this.ApparentMaxStorage - this.storedThingDef.stackLimit);
             }
         }
 
@@ -131,7 +131,7 @@ namespace ExtendedStorageExtended
                 // TODO: Change to synchronize on change in parent settings only!
                 if (Find.TickManager.TicksGame % 120 == 0)
                 {
-                    this.ProgramAttachedHoppers(this.GetStoreSettings());
+                    this.ProgramAttachedHoppers();
                 }
 
                 this.CheckOutputSlot();
@@ -142,14 +142,9 @@ namespace ExtendedStorageExtended
                 else
                 {
                     Thing storedThingAtInput = this.StoredThingInHopper;
-                    if (storedThingAtInput == null)
+                    if (this.StorageHasSpaceForStack)
                     {
                         this.mode = Mode.stockpile;
-                    }
-                    else if (storedThingAtInput != null && storedThingAtInput.stackCount <= storedThingAtInput.def.stackLimit)
-                    {
-                        this.mode = Mode.stockpile;
-                        this.StoredThing.SetForbidden(false);
                     }
                 }
             }
@@ -192,7 +187,7 @@ namespace ExtendedStorageExtended
             }
         }
 
-        private void ProgramAttachedHoppers(StorageSettings settings)
+        private void ProgramAttachedHoppers()
         {
             if (this.mode == Mode.stockpile)
             {
@@ -248,35 +243,30 @@ namespace ExtendedStorageExtended
                 }
                 return;
             }
-            Thing storedThingAtInput2 = this.StoredThingInHopper;
+            Thing hopperThing = this.StoredThingInHopper;
             Thing storedThing = this.StoredThing;
-            if (storedThingAtInput2 != null)
+            if (hopperThing != null)
             {
                 if (storedThing != null)
                 {
                     int a = this.ApparentMaxStorage - storedThing.stackCount;
-                    int num = Mathf.Min(a, storedThingAtInput2.stackCount);
+                    int num = Mathf.Min(a, hopperThing.stackCount);
                     storedThing.stackCount += num;
-                    storedThingAtInput2.stackCount -= num;
-                    if (this.StorageFull)
+                    hopperThing.stackCount -= num;
+                    if (hopperThing.stackCount <= 0)
                     {
-                        int n = storedThing.stackCount - storedThing.def.stackLimit;
-                        storedThingAtInput2.stackCount += n;
-                        storedThing.stackCount -= n;
-                        storedThing.SetForbidden(true);
-
+                        hopperThing.Destroy(0);
+                    }
+                    if (!this.StorageHasSpaceForStack)
+                    {
                         this.mode = Mode.dispense;
                     }
-                    else if (storedThingAtInput2.stackCount <= 0)
-                    {
-                        storedThingAtInput2.Destroy(0);
-                    }
-
                     return;
                 }
-                Thing thing2 = ThingMaker.MakeThing(storedThingAtInput2.def, storedThingAtInput2.Stuff);
+                Thing thing2 = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
                 GenSpawn.Spawn(thing2, this.outputSlot);
-                storedThingAtInput2.Destroy(0);
+                hopperThing.Destroy(0);
+                this.ProgramAttachedHoppers();
             }
         }
     }
