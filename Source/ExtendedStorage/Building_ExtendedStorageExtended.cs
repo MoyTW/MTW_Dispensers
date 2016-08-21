@@ -7,6 +7,34 @@ using UnityEngine;
 using Verse;
 namespace ExtendedStorageExtended
 {
+    public class ExtendedCompHopperUser : CompHopperUser
+    {
+        new public void FindAndProgramHoppers()
+        {
+            Log.Message( string.Format( "{0}.CompHopperUser.FindAndProgramHoppers() new", this.parent.ThingID ) );
+            if (ResourceSettings == null)
+            {
+                // No xml or IHopperUser settings
+                return;
+            }
+            //if (base.gameWasJustLoaded)
+            //{
+            //    gameWasJustLoaded = false;
+            //    return;
+            //}
+            var hoppers = FindHoppers();
+            if (hoppers.NullOrEmpty())
+            {
+                // No hoppers to program
+                return;
+            }
+            foreach (var hopper in hoppers)
+            {
+                hopper.ProgramHopper(ResourceSettings);
+            }
+        }
+    }
+
     public class Building_ExtendedStorageExtended : Building_Storage
     {
         private IntVec3 inputSlot;

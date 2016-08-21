@@ -59,7 +59,8 @@
     </building>
     <comps>
       <li Class="CommunityCoreLibrary.CompProperties_HopperUser">
-        <compClass>CommunityCoreLibrary.CompHopperUser</compClass>
+        <!-- <compClass>CommunityCoreLibrary.CompHopperUser</compClass> -->
+        <compClass>ExtendedStorageExtended.ExtendedCompHopperUser</compClass>
         <resources>
           <categories>
             <li>Resources</li>
