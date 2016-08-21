@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using CommunityCoreLibrary;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using UnityEngine;
 using Verse;
 namespace ExtendedStorageExtended
 {
-    public class Building_ExtendedStorageExtended : Building_Storage
+    public class Building_ExtendedStorageExtended : Building_Storage, IHopperUser
     {
         private IntVec3 inputSlot;
         private IntVec3 outputSlot;
@@ -14,11 +15,34 @@ namespace ExtendedStorageExtended
         private int maxStorage = 1000;
         private ThingDef storedThingDef;
         private Mode mode = Mode.stockpile;
+        private CompHopperUser compHopperUser;
 
         private enum Mode
         {
             stockpile = 0,
             dispense
+        }
+
+        public CompHopperUser CompHopperUser
+        {
+            get
+            {
+                if (compHopperUser == null)
+                {
+                    compHopperUser = this.GetComp<CompHopperUser>();
+                }
+                return compHopperUser;
+            }
+        }
+
+        public ThingFilter ResourceFilter
+        {
+            get
+            {
+                ThingFilter f = this.GetStoreSettings().filter;
+                Log.Message("WHY IS THIS NOT CALLED WTF");
+                return this.GetStoreSettings().filter;
+            }
         }
 
         public Thing StoredThingAtInput

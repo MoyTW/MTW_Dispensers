@@ -49,6 +49,11 @@
     <building>
 	  <wantsHopperAdjacent>true</wantsHopperAdjacent>
     </building>
+	<comps>
+		<li Class="CommunityCoreLibrary.CompProperties_HopperUser">
+			<compClass>CommunityCoreLibrary.CompHopperUser</compClass>
+		</li>
+	</comps>
     <inspectorTabs>
       <li>ITab_Storage</li>
     </inspectorTabs>
