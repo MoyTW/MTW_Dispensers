@@ -7,29 +7,34 @@ using UnityEngine;
 using Verse;
 namespace ExtendedStorageExtended
 {
+    public class CompProperties_HopperUser : CompProperties
+    {
+        public CompProperties_HopperUser()
+        {
+            compClass = typeof(CompHopperUser);
+        }
+
+    }
+
     public class ExtendedCompHopperUser : CompHopperUser
     {
         new public void FindAndProgramHoppers()
         {
-            if (ResourceSettings == null)
-            {
-                // No xml or IHopperUser settings
-                return;
-            }
-            //if (base.gameWasJustLoaded)
-            //{
-            //    gameWasJustLoaded = false;
-            //    return;
-            //}
+            base.FindAndProgramHoppers();
+            this.FindAndSynchronizeHoppers(this.ResourceSettings);
+        }
+
+        public void FindAndSynchronizeHoppers(StorageSettings settings)
+        {
             var hoppers = FindHoppers();
             if (hoppers.NullOrEmpty())
             {
-                // No hoppers to program
                 return;
             }
-            foreach (var hopper in hoppers)
+            foreach(var hopper in hoppers)
             {
-                hopper.ProgramHopper(ResourceSettings);
+                hopper.DeprogramHopper();
+                hopper.ProgramHopper(settings);
             }
         }
     }
@@ -158,6 +163,12 @@ namespace ExtendedStorageExtended
             if (Find.TickManager.TicksGame % 10 == 0)
             {
                 Log.Message("Rotation: " + this.Rotation + " inputSlot: " + this.inputSlot + " outputSlot:" + this.outputSlot + " adjInput: " + this.beforeInput);
+
+                // TODO: Change to synchronize on change in parent settings only!
+                if (Find.TickManager.TicksGame % 120 == 0)
+                {
+                    this.CompHopperUser.FindAndSynchronizeHoppers(this.GetStoreSettings());
+                }
 
                 this.CheckOutputSlot();
                 if (this.mode == Mode.stockpile)
