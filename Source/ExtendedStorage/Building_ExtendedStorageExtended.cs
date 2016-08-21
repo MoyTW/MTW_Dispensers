@@ -22,6 +22,8 @@ namespace ExtendedStorageExtended
             dispense
         }
 
+        #region Properties
+
         public CompHopperUser CompHopperUser
         {
             get
@@ -85,6 +87,7 @@ namespace ExtendedStorageExtended
                 return list.First<Thing>();
             }
         }
+
         public bool StorageFull
         {
             get
@@ -92,6 +95,7 @@ namespace ExtendedStorageExtended
                 return this.storedThingDef != null && this.StoredThing != null && this.StoredThing.stackCount >= this.ApparentMaxStorage;
             }
         }
+
         public int ApparentMaxStorage
         {
             get
@@ -107,12 +111,18 @@ namespace ExtendedStorageExtended
                 return this.maxStorage;
             }
         }
+
+        #endregion
+
+        #region Overrides
+
         public override void SpawnSetup()
         {
             base.SpawnSetup();
             this.maxStorage = ((ESdef)this.def).maxStorage;
             this.outputSlot = GenAdj.CellsOccupiedBy(this).ToList<IntVec3>().First();
         }
+
         public override void Tick()
         {
             base.Tick();
@@ -144,6 +154,14 @@ namespace ExtendedStorageExtended
                 }
             }
         }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Defs.LookDef<ThingDef>(ref this.storedThingDef, "storedThingDef");
+        }
+
+        #endregion
 
         #region Hopper Programming
 
@@ -260,11 +278,6 @@ namespace ExtendedStorageExtended
                 GenSpawn.Spawn(thing2, this.outputSlot);
                 storedThingAtInput2.Destroy(0);
             }
-        }
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_Defs.LookDef<ThingDef>(ref this.storedThingDef, "storedThingDef");
         }
     }
 }
