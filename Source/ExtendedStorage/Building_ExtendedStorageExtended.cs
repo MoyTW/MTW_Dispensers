@@ -11,7 +11,7 @@ namespace ExtendedStorageExtended
     public class Building_ExtendedStorageExtended : Building_Storage
     {
         private IntVec3 outputSlot;
-        private int maxStorage = 3;
+        private int maxStacks = 3;
         private ThingDef storedThingDef;
         private Mode mode = Mode.stockpile;
         private CompHopperUser compHopperUser;
@@ -94,7 +94,7 @@ namespace ExtendedStorageExtended
             {
                 if (this.storedThingDef != null && this.StoredThing != null)
                 {
-                    int capacity = (this.maxStorage - 1) * this.storedThingDef.stackLimit;
+                    int capacity = (this.maxStacks - 1) * this.storedThingDef.stackLimit;
                     return this.StoredThing.stackCount <= capacity;
                 }
                 return false;
@@ -108,7 +108,7 @@ namespace ExtendedStorageExtended
         public override void SpawnSetup()
         {
             base.SpawnSetup();
-            this.maxStorage = ((ESdef)this.def).maxStorage;
+            this.maxStacks = ((ESdef)this.def).maxStacks;
             this.outputSlot = GenAdj.CellsOccupiedBy(this).ToList<IntVec3>().First();
         }
 

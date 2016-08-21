@@ -24,7 +24,7 @@
       <texPath>Things/Building/Furniture/Dispenser</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
-    <maxStorage>225</maxStorage>
+    <maxStacks>10</maxStacks>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>
     <castEdgeShadows>true</castEdgeShadows>

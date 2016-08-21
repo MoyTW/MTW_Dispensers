@@ -4,6 +4,6 @@ namespace ExtendedStorageExtended
 {
     public class ESdef : ThingDef
     {
-        public int maxStorage;
+        public int maxStacks;
     }
 }
