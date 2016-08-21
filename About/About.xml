@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>ExtendedStorage</name>
-	<author>Skullywag</author>
+	<name>ExtendedStorageExtended(Change the name)</name>
+	<author>Skullywag,MoyTW</author>
 	<targetVersion>0.14.1249</targetVersion>
-	<description>Adds additional storage buildings that multi stack items.</description>
+	<description>Adds additional storage buildings that multi stack items. Need to ask Skullywag if he wants his name on this or a credit or what.</description>
 </ModMetaData>
