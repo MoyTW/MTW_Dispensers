@@ -11,7 +11,6 @@ namespace ExtendedStorageExtended
     {
         new public void FindAndProgramHoppers()
         {
-            Log.Message( string.Format( "{0}.CompHopperUser.FindAndProgramHoppers() new", this.parent.ThingID ) );
             if (ResourceSettings == null)
             {
                 // No xml or IHopperUser settings
@@ -35,7 +34,7 @@ namespace ExtendedStorageExtended
         }
     }
 
-    public class Building_ExtendedStorageExtended : Building_Storage
+    public class Building_ExtendedStorageExtended : Building_Storage, IHopperUser
     {
         private IntVec3 inputSlot;
         private IntVec3 outputSlot;
@@ -43,7 +42,7 @@ namespace ExtendedStorageExtended
         private int maxStorage = 1000;
         private ThingDef storedThingDef;
         private Mode mode = Mode.stockpile;
-        private CompHopperUser compHopperUser;
+        private ExtendedCompHopperUser compHopperUser;
 
         private enum Mode
         {
@@ -51,13 +50,21 @@ namespace ExtendedStorageExtended
             dispense
         }
 
-        public CompHopperUser CompHopperUser
+        public ThingFilter ResourceFilter
+        {
+            get
+            {
+                return this.GetStoreSettings().filter;
+            }
+        }
+
+        public ExtendedCompHopperUser CompHopperUser
         {
             get
             {
                 if (compHopperUser == null)
                 {
-                    compHopperUser = this.GetComp<CompHopperUser>();
+                    compHopperUser = (ExtendedCompHopperUser)this.GetComp<CompHopperUser>();
                 }
                 return compHopperUser;
             }

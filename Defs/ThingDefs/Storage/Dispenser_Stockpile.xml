@@ -58,14 +58,8 @@
         </fixedStorageSettings>
     </building>
     <comps>
-      <li Class="CommunityCoreLibrary.CompProperties_HopperUser">
-        <!-- <compClass>CommunityCoreLibrary.CompHopperUser</compClass> -->
+      <li>
         <compClass>ExtendedStorageExtended.ExtendedCompHopperUser</compClass>
-        <resources>
-          <categories>
-            <li>Resources</li>
-          </categories>
-        </resources>
       </li>
     </comps>
     <placeWorkers>
