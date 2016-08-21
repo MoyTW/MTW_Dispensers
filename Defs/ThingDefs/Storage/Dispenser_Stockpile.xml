@@ -23,7 +23,6 @@
     <graphicData>
       <texPath>Things/Building/Furniture/Dispenser</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawsize>2,1</drawsize>
     </graphicData>
     <maxStorage>225</maxStorage>
     <altitudeLayer>Building</altitudeLayer>
@@ -36,7 +35,7 @@
       <Beauty>8</Beauty>
     </statBases>
     <description>Haulers carry stuff here for temporary storage.</description>
-    <size>(2,1)</size>
+    <size>(1,1)</size>
     <stuffCategories>
       <li>Metallic</li>
       <li>Woody</li>
