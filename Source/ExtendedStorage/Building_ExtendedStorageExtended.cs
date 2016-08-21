@@ -7,7 +7,7 @@ using UnityEngine;
 using Verse;
 namespace ExtendedStorageExtended
 {
-    public class Building_ExtendedStorageExtended : Building_Storage, IHopperUser
+    public class Building_ExtendedStorageExtended : Building_Storage
     {
         private IntVec3 inputSlot;
         private IntVec3 outputSlot;
@@ -32,16 +32,6 @@ namespace ExtendedStorageExtended
                     compHopperUser = this.GetComp<CompHopperUser>();
                 }
                 return compHopperUser;
-            }
-        }
-
-        public ThingFilter ResourceFilter
-        {
-            get
-            {
-                ThingFilter f = this.GetStoreSettings().filter;
-                Log.Message("WHY IS THIS NOT CALLED WTF");
-                return this.GetStoreSettings().filter;
             }
         }
 

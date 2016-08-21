@@ -47,7 +47,15 @@
     </killedLeavings>
     <filthLeaving>BuildingRubble</filthLeaving>
     <building>
-	  <wantsHopperAdjacent>true</wantsHopperAdjacent>
+      <wantsHopperAdjacent>true</wantsHopperAdjacent>
+      <fixedStorageSettings>
+          <priority>Important</priority>
+          <filter>
+            <categories>
+              <li>Resources</li>
+            </categories>
+          </filter>
+        </fixedStorageSettings>
     </building>
 	<comps>
 		<li Class="CommunityCoreLibrary.CompProperties_HopperUser">
