@@ -7,39 +7,8 @@ using UnityEngine;
 using Verse;
 namespace ExtendedStorageExtended
 {
-    public class CompProperties_HopperUser : CompProperties
-    {
-        public CompProperties_HopperUser()
-        {
-            compClass = typeof(CompHopperUser);
-        }
 
-    }
-
-    public class ExtendedCompHopperUser : CompHopperUser
-    {
-        new public void FindAndProgramHoppers()
-        {
-            base.FindAndProgramHoppers();
-            this.FindAndSynchronizeHoppers(this.ResourceSettings);
-        }
-
-        public void FindAndSynchronizeHoppers(StorageSettings settings)
-        {
-            var hoppers = FindHoppers();
-            if (hoppers.NullOrEmpty())
-            {
-                return;
-            }
-            foreach(var hopper in hoppers)
-            {
-                hopper.DeprogramHopper();
-                hopper.ProgramHopper(settings);
-            }
-        }
-    }
-
-    public class Building_ExtendedStorageExtended : Building_Storage, IHopperUser
+    public class Building_ExtendedStorageExtended : Building_Storage
     {
         private IntVec3 inputSlot;
         private IntVec3 outputSlot;
@@ -47,12 +16,26 @@ namespace ExtendedStorageExtended
         private int maxStorage = 1000;
         private ThingDef storedThingDef;
         private Mode mode = Mode.stockpile;
-        private ExtendedCompHopperUser compHopperUser;
+        private CompHopperUser compHopperUser;
 
         private enum Mode
         {
             stockpile = 0,
             dispense
+        }
+
+        public void FindAndSynchronizeHoppers(StorageSettings settings)
+        {
+            var hoppers = this.CompHopperUser.FindHoppers();
+            if (hoppers.NullOrEmpty())
+            {
+                return;
+            }
+            foreach (var hopper in hoppers)
+            {
+                hopper.DeprogramHopper();
+                hopper.ProgramHopper(settings);
+            }
         }
 
         public ThingFilter ResourceFilter
@@ -63,13 +46,13 @@ namespace ExtendedStorageExtended
             }
         }
 
-        public ExtendedCompHopperUser CompHopperUser
+        public CompHopperUser CompHopperUser
         {
             get
             {
                 if (compHopperUser == null)
                 {
-                    compHopperUser = (ExtendedCompHopperUser)this.GetComp<CompHopperUser>();
+                    compHopperUser = this.GetComp<CompHopperUser>();
                 }
                 return compHopperUser;
             }
@@ -167,7 +150,7 @@ namespace ExtendedStorageExtended
                 // TODO: Change to synchronize on change in parent settings only!
                 if (Find.TickManager.TicksGame % 120 == 0)
                 {
-                    this.CompHopperUser.FindAndSynchronizeHoppers(this.GetStoreSettings());
+                    this.FindAndSynchronizeHoppers(this.GetStoreSettings());
                 }
 
                 this.CheckOutputSlot();
