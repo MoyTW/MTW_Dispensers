@@ -10,6 +10,7 @@ namespace ExtendedStorageExtended
     {
         private IntVec3 inputSlot;
         private IntVec3 outputSlot;
+        private IntVec3 beforeInput;
         private int maxStorage = 1000;
         private ThingDef storedThingDef;
         private Mode mode = Mode.stockpile;
@@ -98,12 +99,17 @@ namespace ExtendedStorageExtended
             List<IntVec3> list = GenAdj.CellsOccupiedBy(this).ToList<IntVec3>();
             this.inputSlot = list[0];
             this.outputSlot = list[1];
+
+            IntVec2 s = new IntVec2(1, 1);
+            this.beforeInput = GenAdj.CellsAdjacentCardinal(this.inputSlot, this.Rotation, s).First();
         }
         public override void Tick()
         {
             base.Tick();
             if (Find.TickManager.TicksGame % 10 == 0)
             {
+                Log.Message("Rotation: " + this.Rotation + " inputSlot: " + this.inputSlot + " outputSlot:" + this.outputSlot + " adjInput: " + this.beforeInput);
+
                 this.CheckOutputSlot();
                 if (this.mode == Mode.stockpile)
                 {
