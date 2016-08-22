@@ -108,7 +108,11 @@ namespace ExtendedStorageExtended
         public override void SpawnSetup()
         {
             base.SpawnSetup();
-            this.maxStacks = ((ESdef)this.def).maxStacks;
+            var defStacks = ((ESdef)this.def).maxStacks;
+            if (defStacks > 0)
+            {
+                this.maxStacks = defStacks;
+            }
             this.outputSlot = GenAdj.CellsOccupiedBy(this).ToList<IntVec3>().First();
         }
 
@@ -196,7 +200,7 @@ namespace ExtendedStorageExtended
             {
                 Thing alreadyInOutput = (
                 from t in Find.ThingGrid.ThingsAt(this.outputSlot)
-                orderby t.stackCount
+                where this.GetStoreSettings().AllowedToAccept(t)
                 select t).FirstOrDefault();
 
                 if (alreadyInOutput != null)
@@ -233,11 +237,14 @@ namespace ExtendedStorageExtended
             // If this is null, it means there is nothing in the output slot, since CheckOutput is called directly
             // before this. Yes, that's...a confusing flow, I'll refactor it if I have the energy.
             if (this.storedThingDef == null) {
-                this.storedThingDef = hopperThing.def;
-                Thing thing = ThingMaker.MakeThing(this.storedThingDef, hopperThing.Stuff);
-                thing.stackCount = hopperThing.stackCount;
-                hopperThing.Destroy(0);
-                GenSpawn.Spawn(thing, this.outputSlot);
+                if (hopperThing != null)
+                {
+                    this.storedThingDef = hopperThing.def;
+                    Thing thing = ThingMaker.MakeThing(this.storedThingDef, hopperThing.Stuff);
+                    thing.stackCount = hopperThing.stackCount;
+                    hopperThing.Destroy(0);
+                    GenSpawn.Spawn(thing, this.outputSlot);
+                }
                 return;
             }
 
