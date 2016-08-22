@@ -11,7 +11,7 @@ namespace ExtendedStorageExtended
     public class Building_ExtendedStorageExtended : Building_Storage
     {
         private IntVec3 outputSlot;
-        private int maxStacks = 3;
+        private int maxStacks = 1000;
         private ThingDef storedThingDef;
         private Mode mode = Mode.stockpile;
         private CompHopperUser compHopperUser;
