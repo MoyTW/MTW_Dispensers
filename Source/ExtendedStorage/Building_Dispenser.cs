@@ -139,8 +139,9 @@ namespace ExtendedStorageExtended
                 }
                 else
                 {
-                    Thing thing2 = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
-                    GenSpawn.Spawn(thing2, this.outputSlot);
+                    Thing newStack = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
+                    GenSpawn.Spawn(newStack, this.outputSlot);
+                    newStack.stackCount = hopperThing.stackCount;
                 }
 
                 if (!this.StorageHasSpaceForStack)
@@ -156,12 +157,14 @@ namespace ExtendedStorageExtended
             if (hopperThing != null && hopperThing.def == storedThing.def)
             {
                 hopperThing.stackCount += numTransfer;
-                storedThing.stackCount += numTransfer;
+                storedThing.stackCount -= numTransfer;
             }
             else if (hopperThing == null)
             {
-                Thing newStack = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
+                Thing newStack = ThingMaker.MakeThing(storedThing.def, storedThing.Stuff);
                 GenSpawn.Spawn(newStack, this.Hopper.Building.AllSlotCells().First()); // Assumes hopper is 1-cell
+                newStack.stackCount = numTransfer;
+                storedThing.stackCount -= numTransfer;
             }
         }
 
