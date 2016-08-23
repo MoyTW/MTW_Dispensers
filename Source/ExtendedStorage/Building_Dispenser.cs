@@ -120,30 +120,29 @@ namespace ExtendedStorageExtended
             Thing hopperThing = this.HopperThing;
             Thing storedThing = this.StoredThing;
 
-            if (hopperThing != null)
+            if (hopperThing == null) { return; }
+
+            if (storedThing == null)
             {
-                if (storedThing != null)
+                Thing newStack = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
+                GenSpawn.Spawn(newStack, this.outputSlot);
+                newStack.stackCount = hopperThing.stackCount;
+                hopperThing.Destroy(0);
+                newStack.SetForbidden(true);
+            }
+            else if (hopperThing.def == storedThing.def)
+            {
+                if (!this.HasSpaceFor(storedThing, hopperThing))
                 {
-                    if (!this.HasSpaceFor(storedThing, hopperThing))
-                    {
-                        this.mode = Mode.dispense;
-                        this.TryDispenseItem();
-                    }
-                    else
-                    {
-                        int numTransfer = hopperThing.stackCount;
-                        storedThing.stackCount += numTransfer;
-                        hopperThing.stackCount -= numTransfer;
-                        hopperThing.Destroy(0);
-                    }
+                    this.mode = Mode.dispense;
+                    this.TryDispenseItem();
                 }
                 else
                 {
-                    Thing newStack = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
-                    GenSpawn.Spawn(newStack, this.outputSlot);
-                    newStack.stackCount = hopperThing.stackCount;
+                    int numTransfer = hopperThing.stackCount;
+                    storedThing.stackCount += numTransfer;
+                    hopperThing.stackCount -= numTransfer;
                     hopperThing.Destroy(0);
-                    newStack.SetForbidden(true);
                 }
             }
         }
