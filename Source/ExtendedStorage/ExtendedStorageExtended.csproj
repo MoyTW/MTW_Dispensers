@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Building_Dispenser.cs" />
     <Compile Include="Building_ExtendedStorageExtended.cs" />
     <Compile Include="DetourInjector.cs" />
     <Compile Include="ExtendedStorageExtended.cs" />

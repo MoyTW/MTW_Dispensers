@@ -12,8 +12,8 @@ namespace ExtendedStorageExtended
         private IntVec3 outputSlot;
         private int maxStacks = 1000;
         private Mode mode = Mode.stockpile;
-        private CompHopperUser compHopperUser;
-        private CompHopper hopper;
+        private CompHopperUser _compHopperUser;
+        private CompHopper _hopper;
 
         private enum Mode
         {
@@ -27,11 +27,11 @@ namespace ExtendedStorageExtended
         {
             get
             {
-                if (compHopperUser == null)
+                if (_compHopperUser == null)
                 {
-                    compHopperUser = this.GetComp<CompHopperUser>();
+                    _compHopperUser = this.GetComp<CompHopperUser>();
                 }
-                return compHopperUser;
+                return _compHopperUser;
             }
         }
 
@@ -39,13 +39,17 @@ namespace ExtendedStorageExtended
         {
             get
             {
-                if (this.hopper.FindHopperUser() == this.CompHopperUser)
+                if (this._hopper != null && this._hopper.FindHopperUser() == this.CompHopperUser)
                 {
                     Log.Message("Using stored hopper");
-                    return this.hopper;
+                    return this._hopper;
                 }
-                this.hopper = this.CompHopperUser.FindHoppers().FirstOrDefault();
-                return this.hopper;
+                var hopper = this.CompHopperUser.FindHoppers().FirstOrDefault();
+                if (hopper != null)
+                {
+                    this._hopper = hopper;
+                } 
+                return hopper;
             }
         }
 
@@ -53,7 +57,8 @@ namespace ExtendedStorageExtended
         {
             get
             {
-                return this.Hopper.GetResource(Hopper.GetStoreSettings().filter);
+                var hopper = this.Hopper;
+                return hopper != null ? hopper.GetResource(hopper.GetStoreSettings().filter) : null;
             }
         }
 
@@ -61,9 +66,14 @@ namespace ExtendedStorageExtended
         {
             get
             {
-                return (from t in Find.ThingGrid.ThingsListAt(this.outputSlot)
-                        where this.Hopper.GetStoreSettings().AllowedToAccept(t)
-                        select t).FirstOrDefault();
+                var hopper = this.Hopper;
+                if (hopper != null)
+                {
+                    return (from t in Find.ThingGrid.ThingsListAt(this.outputSlot)
+                            where hopper.GetStoreSettings().AllowedToAccept(t)
+                            select t).FirstOrDefault();
+                }
+                return null;
             }
         }
 
@@ -82,5 +92,105 @@ namespace ExtendedStorageExtended
         }
 
         #endregion
+
+        #region Overrides
+
+        public override void SpawnSetup()
+        {
+            base.SpawnSetup();
+            var defStacks = ((ESdef)this.def).maxStacks;
+            if (defStacks > 0)
+            {
+                this.maxStacks = defStacks;
+            }
+            this.outputSlot = GenAdj.CellsOccupiedBy(this).ToList<IntVec3>().First();
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+            if (Find.TickManager.TicksGame % 10 == 0)
+            {
+                if (this.mode == Mode.stockpile)
+                {
+                    this.TryStockpileItem();
+                }
+                else
+                {
+                    this.TryDispenseItem();
+                }
+            }
+        }
+
+        #endregion
+
+        private void TryStockpileItem()
+        {
+            Thing hopperThing = this.HopperThing;
+            Thing storedThing = this.StoredThing;
+
+            if (hopperThing != null)
+            {
+                if (storedThing != null)
+                {
+                    int numTransfer = hopperThing.stackCount;
+                    storedThing.stackCount += numTransfer;
+                    hopperThing.stackCount -= numTransfer;
+                }
+                else
+                {
+                    Thing thing2 = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
+                    GenSpawn.Spawn(thing2, this.outputSlot);
+                }
+
+                if (!this.StorageHasSpaceForStack)
+                {
+                    this.mode = Mode.dispense;
+                }
+                hopperThing.Destroy(0);
+            }
+        }
+
+        private void DispenseItem(int numTransfer, Thing hopperThing, Thing storedThing)
+        {
+            if (hopperThing != null && hopperThing.def == storedThing.def)
+            {
+                hopperThing.stackCount += numTransfer;
+                storedThing.stackCount += numTransfer;
+            }
+            else if (hopperThing == null)
+            {
+                Thing newStack = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
+                GenSpawn.Spawn(newStack, this.Hopper.Building.AllSlotCells().First()); // Assumes hopper is 1-cell
+            }
+        }
+
+        private void TryDispenseItem()
+        {
+            if (this.Hopper == null) { return; }
+
+            Thing hopperThing = this.HopperThing;
+            Thing storedThing = this.StoredThing;
+
+            int hopperStackCount = hopperThing != null ? hopperThing.stackCount : 0;
+
+            if (storedThing != null)
+            {
+                int numTransfer = storedThing.def.stackLimit - hopperStackCount;
+
+                if (numTransfer >= storedThing.stackCount)
+                {
+                    this.mode = Mode.stockpile;
+                }
+                else if (numTransfer > 0)
+                {
+                    this.DispenseItem(numTransfer, hopperThing, storedThing);
+                }
+            }
+            else
+            {
+                this.mode = Mode.stockpile;
+            }
+        }
     }
 }
