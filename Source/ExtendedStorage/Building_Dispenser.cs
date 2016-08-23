@@ -77,20 +77,6 @@ namespace ExtendedStorageExtended
             }
         }
 
-        public bool StorageHasSpaceForStack
-        {
-            get
-            {
-                Thing storedThing = this.StoredThing;
-                if (storedThing != null)
-                {
-                    int capacity = (this.maxStacks - 1) * storedThing.def.stackLimit;
-                    return storedThing.stackCount <= capacity;
-                }
-                return false;
-            }
-        }
-
         #endregion
 
         #region Overrides
@@ -124,6 +110,12 @@ namespace ExtendedStorageExtended
 
         #endregion
 
+        private bool HasSpaceFor(Thing storedThing, Thing hopperThing)
+        {
+            int capacity = this.maxStacks * storedThing.def.stackLimit;
+            return (storedThing.stackCount + hopperThing.stackCount) < capacity;
+        }
+
         private void TryStockpileItem()
         {
             Thing hopperThing = this.HopperThing;
@@ -133,22 +125,26 @@ namespace ExtendedStorageExtended
             {
                 if (storedThing != null)
                 {
-                    int numTransfer = hopperThing.stackCount;
-                    storedThing.stackCount += numTransfer;
-                    hopperThing.stackCount -= numTransfer;
+                    if (!this.HasSpaceFor(storedThing, hopperThing))
+                    {
+                        this.mode = Mode.dispense;
+                        this.TryDispenseItem();
+                    }
+                    else
+                    {
+                        int numTransfer = hopperThing.stackCount;
+                        storedThing.stackCount += numTransfer;
+                        hopperThing.stackCount -= numTransfer;
+                        hopperThing.Destroy(0);
+                    }
                 }
                 else
                 {
                     Thing newStack = ThingMaker.MakeThing(hopperThing.def, hopperThing.Stuff);
                     GenSpawn.Spawn(newStack, this.outputSlot);
                     newStack.stackCount = hopperThing.stackCount;
+                    hopperThing.Destroy(0);
                 }
-
-                if (!this.StorageHasSpaceForStack)
-                {
-                    this.mode = Mode.dispense;
-                }
-                hopperThing.Destroy(0);
             }
         }
 
@@ -184,6 +180,7 @@ namespace ExtendedStorageExtended
                 if (numTransfer >= storedThing.stackCount)
                 {
                     this.mode = Mode.stockpile;
+                    this.TryStockpileItem();
                 }
                 else if (numTransfer > 0)
                 {
@@ -193,6 +190,7 @@ namespace ExtendedStorageExtended
             else
             {
                 this.mode = Mode.stockpile;
+                this.TryStockpileItem();
             }
         }
     }
