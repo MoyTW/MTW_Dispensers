@@ -128,7 +128,9 @@ namespace ExtendedStorageExtended
                     if (!this.HasSpaceFor(storedThing, hopperThing))
                     {
                         this.mode = Mode.dispense;
+                        storedThing.SetForbidden(true);
                         this.TryDispenseItem();
+                        this.GetStoreSettings().filter.SetDisallowAll();
                     }
                     else
                     {
@@ -144,6 +146,9 @@ namespace ExtendedStorageExtended
                     GenSpawn.Spawn(newStack, this.outputSlot);
                     newStack.stackCount = hopperThing.stackCount;
                     hopperThing.Destroy(0);
+
+                    this.GetStoreSettings().filter.SetDisallowAll();
+                    this.GetStoreSettings().filter.SetAllow(hopperThing.def, true);
                 }
             }
         }
@@ -166,7 +171,8 @@ namespace ExtendedStorageExtended
 
         private void TryDispenseItem()
         {
-            if (this.Hopper == null) { return; }
+            var hopper = this.Hopper;
+            if (hopper == null) { return; }
 
             Thing hopperThing = this.HopperThing;
             Thing storedThing = this.StoredThing;
@@ -180,7 +186,9 @@ namespace ExtendedStorageExtended
                 if (numTransfer >= storedThing.stackCount)
                 {
                     this.mode = Mode.stockpile;
+                    storedThing.SetForbidden(false);
                     this.TryStockpileItem();
+                    this.GetStoreSettings().CopyFrom(hopper.GetStoreSettings());
                 }
                 else if (numTransfer > 0)
                 {
@@ -191,6 +199,7 @@ namespace ExtendedStorageExtended
             {
                 this.mode = Mode.stockpile;
                 this.TryStockpileItem();
+                this.GetStoreSettings().CopyFrom(hopper.GetStoreSettings());
             }
         }
     }
