@@ -19,7 +19,7 @@
   <ThingDef ParentName="BuildingBase" Class="ExtendedStorageExtended.ESdef">
     <defName>Resource_Storage_Bin</defName>
     <label>Storage Bin</label>
-    <thingClass>ExtendedStorageExtended.Building_ExtendedStorageExtended</thingClass>
+    <thingClass>ExtendedStorageExtended.Building_Dispenser</thingClass>
     <graphicData>
       <texPath>Things/Building/Furniture/Dispenser</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -48,14 +48,6 @@
     <filthLeaving>BuildingRubble</filthLeaving>
     <building>
       <wantsHopperAdjacent>true</wantsHopperAdjacent>
-      <fixedStorageSettings>
-          <priority>Important</priority>
-          <filter>
-            <categories>
-              <li>Resources</li>
-            </categories>
-          </filter>
-        </fixedStorageSettings>
     </building>
     <comps>
       <li Class="CommunityCoreLibrary.CompProperties_HopperUser">
@@ -70,9 +62,6 @@
     <placeWorkers>
       <li>CommunityCoreLibrary.PlaceWorker_HopperMagnifier</li>
     </placeWorkers>
-    <inspectorTabs>
-      <li>ITab_Storage</li>
-    </inspectorTabs>
     <tickerType>Normal</tickerType>
     <designationCategory>Furniture</designationCategory>
     <staticSunShadowHeight>0.5</staticSunShadowHeight>
