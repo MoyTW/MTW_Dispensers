@@ -9,7 +9,7 @@ using Verse.AI;
 using Verse;
 using System.Reflection;
 
-namespace ExtendedStorageExtended
+namespace MTW_Dispensers
 {
     internal class _Thing : Thing
     {

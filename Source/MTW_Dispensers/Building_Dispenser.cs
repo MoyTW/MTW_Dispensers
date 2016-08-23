@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
-namespace ExtendedStorageExtended
+namespace MTW_Dispensers
 {
     class Building_Dispenser : Building
     {
@@ -83,7 +83,7 @@ namespace ExtendedStorageExtended
         public override void SpawnSetup()
         {
             base.SpawnSetup();
-            var defStacks = ((ESdef)this.def).maxStacks;
+            var defStacks = ((DispenserDef)this.def).maxStacks;
             if (defStacks > 0)
             {
                 this.maxStacks = defStacks;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>ExtendedStorageExtended(Change the name)</name>
-	<author>Skullywag,MoyTW</author>
+	<name>MTW_Dispensers</name>
+	<author>MoyTW (from Skullywag's Extended Storage)</author>
 	<targetVersion>0.14.1249</targetVersion>
-	<description>Adds additional storage buildings that multi stack items. Need to ask Skullywag if he wants his name on this or a credit or what.</description>
+	<description>Adds dispensers - storage buildings which store stacks of items, and feed them back into hoppers to prevent excessive hauling.</description>
 </ModMetaData>

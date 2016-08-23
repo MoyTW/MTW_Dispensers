@@ -2,11 +2,11 @@
 <Defs>
 
   <CommunityCoreLibrary.ModHelperDef>
-    <defName>ExtendedStorageExtended</defName>
-    <ModName>ExtendedStorageExtended</ModName>
+    <defName>MTW_Dispensers</defName>
+    <ModName>MTW_Dispensers</ModName>
     <minCCLVersion>0.14.0</minCCLVersion>
 		<SpecialInjectors>
-			<li>ExtendedStorageExtended.DetourInjector</li>
+			<li>MTW_Dispensers.DetourInjector</li>
 		</SpecialInjectors>
   </CommunityCoreLibrary.ModHelperDef>
 

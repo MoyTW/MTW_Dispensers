@@ -16,10 +16,10 @@
 
   <!--============================== Storage ===========================-->
 
-  <ThingDef ParentName="BuildingBase" Class="ExtendedStorageExtended.ESdef">
-    <defName>MTW_Dispenser_Storage_Bin</defName>
+  <ThingDef ParentName="BuildingBase" Class="MTW_Dispensers.DispenserDef">
+    <defName>MTW_Dispensers_Storage_Bin</defName>
     <label>storage bin</label>
-    <thingClass>ExtendedStorageExtended.Building_Dispenser</thingClass>
+    <thingClass>MTW_Dispensers.Building_Dispenser</thingClass>
     <graphicData>
       <texPath>Things/Building/Furniture/Dispenser</texPath>
       <graphicClass>Graphic_Single</graphicClass>

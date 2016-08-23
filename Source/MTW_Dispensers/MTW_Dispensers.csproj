@@ -7,8 +7,8 @@
     <ProjectGuid>{A36BEEB2-7379-475B-B537-827E34571962}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExtendedStorageExtended</RootNamespace>
-    <AssemblyName>ExtendedStorageExtended</AssemblyName>
+    <RootNamespace>MTW_Dispensers</RootNamespace>
+    <AssemblyName>MTW_Dispensers</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Building_Dispenser.cs" />
     <Compile Include="DetourInjector.cs" />
-    <Compile Include="ExtendedStorageExtended.cs" />
+    <Compile Include="MTW_Dispensers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="_Thing.cs" />
   </ItemGroup>
