@@ -7,7 +7,7 @@ using UnityEngine;
 using Verse;
 namespace ExtendedStorageExtended
 {
-    class Building_Dispenser : Building_Storage
+    class Building_Dispenser : Building
     {
         private IntVec3 outputSlot;
         private int maxStacks = 1000;
@@ -41,7 +41,6 @@ namespace ExtendedStorageExtended
             {
                 if (this._hopper != null && this._hopper.FindHopperUser() == this.CompHopperUser)
                 {
-                    Log.Message("Using stored hopper");
                     return this._hopper;
                 }
                 var hopper = this.CompHopperUser.FindHoppers().FirstOrDefault();
@@ -128,9 +127,7 @@ namespace ExtendedStorageExtended
                     if (!this.HasSpaceFor(storedThing, hopperThing))
                     {
                         this.mode = Mode.dispense;
-                        storedThing.SetForbidden(true);
                         this.TryDispenseItem();
-                        this.GetStoreSettings().filter.SetDisallowAll();
                     }
                     else
                     {
@@ -146,9 +143,7 @@ namespace ExtendedStorageExtended
                     GenSpawn.Spawn(newStack, this.outputSlot);
                     newStack.stackCount = hopperThing.stackCount;
                     hopperThing.Destroy(0);
-
-                    this.GetStoreSettings().filter.SetDisallowAll();
-                    this.GetStoreSettings().filter.SetAllow(hopperThing.def, true);
+                    newStack.SetForbidden(true);
                 }
             }
         }
@@ -186,9 +181,7 @@ namespace ExtendedStorageExtended
                 if (numTransfer >= storedThing.stackCount)
                 {
                     this.mode = Mode.stockpile;
-                    storedThing.SetForbidden(false);
                     this.TryStockpileItem();
-                    this.GetStoreSettings().CopyFrom(hopper.GetStoreSettings());
                 }
                 else if (numTransfer > 0)
                 {
@@ -199,7 +192,6 @@ namespace ExtendedStorageExtended
             {
                 this.mode = Mode.stockpile;
                 this.TryStockpileItem();
-                this.GetStoreSettings().CopyFrom(hopper.GetStoreSettings());
             }
         }
     }
