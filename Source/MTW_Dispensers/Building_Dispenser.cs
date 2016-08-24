@@ -112,7 +112,7 @@ namespace MTW_Dispensers
         private bool HasSpaceFor(Thing storedThing, Thing hopperThing)
         {
             int capacity = this.maxStacks * storedThing.def.stackLimit;
-            return (storedThing.stackCount + hopperThing.stackCount) < capacity;
+            return (storedThing.stackCount + hopperThing.stackCount) <= capacity;
         }
 
         private void TryStockpileItem()
