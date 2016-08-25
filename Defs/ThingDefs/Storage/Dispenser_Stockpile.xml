@@ -21,7 +21,7 @@
     <label>storage bin</label>
     <thingClass>MTW_Dispensers.Building_Dispenser</thingClass>
     <graphicData>
-      <texPath>Things/Building/Furniture/Dispenser</texPath>
+      <texPath>Things/Building/Furniture/StorageBin</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <maxStacks>1</maxStacks>
@@ -46,6 +46,72 @@
       <wantsHopperAdjacent>true</wantsHopperAdjacent>
     </building>
     <comps>
+      <li Class="CommunityCoreLibrary.CompProperties_HopperUser">
+        <compClass>CommunityCoreLibrary.CompHopperUser</compClass>
+        <resources>
+          <categories>
+            <li>Resources</li>
+          </categories>
+        </resources>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>CommunityCoreLibrary.PlaceWorker_HopperMagnifier</li>
+    </placeWorkers>
+    <tickerType>Normal</tickerType>
+    <designationCategory>Furniture</designationCategory>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <surfaceType>Item</surfaceType>
+    <minifiedDef>MinifiedFurniture</minifiedDef>
+    <tradeTags>
+      <li>Furniture</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase" Class="MTW_Dispensers.DispenserDef">
+    <defName>MTW_Dispensers_Refrigerated_Storage_Bin</defName>
+    <label>refrigerated storage bin</label>
+    <thingClass>MTW_Dispensers.Building_Dispenser</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Furniture/RefrigeratedStorageBin</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <maxStacks>1</maxStacks>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <statBases>
+      <WorkToMake>450</WorkToMake>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <description>A refrigerated dispenser for temporarily storing resources. Stores a single stack. Requires an attached hopper.</description>
+    <size>(1,1)</size>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>15</costStuffCount>
+    <filthLeaving>BuildingRubble</filthLeaving>
+    <building>
+      <wantsHopperAdjacent>true</wantsHopperAdjacent>
+    </building>
+    <comps>
+      <li>
+        <compClass>CommunityCoreLibrary.CompRefrigerated</compClass>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>100</basePowerConsumption>
+      </li>
+      <li Class="CommunityCoreLibrary.CompProperties_LowIdleDraw">
+        <compClass>CommunityCoreLibrary.CompPowerLowIdleDraw</compClass>
+        <idlePowerFactor>0.25</idlePowerFactor>
+        <operationalMode>Cycle</operationalMode>
+        <cycleLowTicks>2500</cycleLowTicks>
+        <cycleHighTicks>1500</cycleHighTicks>
+      </li>
       <li Class="CommunityCoreLibrary.CompProperties_HopperUser">
         <compClass>CommunityCoreLibrary.CompHopperUser</compClass>
         <resources>
