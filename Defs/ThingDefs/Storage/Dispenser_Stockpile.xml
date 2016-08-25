@@ -29,10 +29,9 @@
     <passability>PassThroughOnly</passability>
     <castEdgeShadows>true</castEdgeShadows>
     <statBases>
+      <WorkToMake>450</WorkToMake>
       <MaxHitPoints>100</MaxHitPoints>
-      <WorkToMake>580</WorkToMake>
       <Flammability>1.0</Flammability>
-      <Beauty>8</Beauty>
     </statBases>
     <description>A dispenser for temporarily storing resources. Stores a single stack. Requires an attached hopper.</description>
     <size>(1,1)</size>
@@ -41,7 +40,7 @@
       <li>Woody</li>
       <li>Stony</li>
     </stuffCategories>
-    <costStuffCount>5</costStuffCount>
+    <costStuffCount>15</costStuffCount>
     <filthLeaving>BuildingRubble</filthLeaving>
     <building>
       <wantsHopperAdjacent>true</wantsHopperAdjacent>
